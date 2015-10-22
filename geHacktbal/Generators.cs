@@ -5,11 +5,14 @@ namespace geHacktbal
 
 	// ===============================================================================//
 	// This class holds functions with which the game can generate any data it may need,
-	// such as non-defined IP addresses, dates, and passwords.
+	// such as non-defined IP addresses, names, and passwords.
 	// ==============================================================================//
 
 	public class Generators
 	{
+		private static Random rnd = new Random();
+		private const string pwchars = "AaBbCcDdEeFfGgHhJjKkMmNnPpQqRrSsTtUuVvWwXxYyZz23456789";
+
 		public Generators ()
 		{
 		}
@@ -24,10 +27,10 @@ namespace geHacktbal
 			int iIPSec3;
 			int iIPSec4;
 
-			iIPSec1 = new Random ().Next (1, 255);
-			iIPSec2 = new Random (iIPSec1).Next (0, 255);
-			iIPSec3 = new Random (iIPSec2).Next (0, 255);
-			iIPSec4 = new Random (iIPSec3).Next (0, 255);
+			iIPSec1 = rnd.Next (1, 255);
+			iIPSec2 = rnd.Next (0, 255);
+			iIPSec3 = rnd.Next (0, 255);
+			iIPSec4 = rnd.Next (0, 255);
 
 			string sIP = "";
 			sIP += iIPSec1.ToString() + ".";
@@ -36,6 +39,21 @@ namespace geHacktbal
 			sIP += iIPSec4.ToString() + "";
 
 			return sIP;
+		}
+
+
+		// ================
+		// This Password Generator creates a randomized string using characters as defined in pwchars, length of the password is supplied by integer 'difficulty'
+		// ================
+		public static string GeneratePassword(int difficulty)
+		{
+			char[] buffer = new char[difficulty];
+
+			for (int i = 0; i < difficulty; i++) {
+				buffer [i] = pwchars [rnd.Next (pwchars.Length)];
+			}
+
+			return new string(buffer);
 		}
 	}
 }

@@ -25,7 +25,12 @@ public partial class MainWindow: Gtk.Window
 
 	protected void OnKeyPressEvent (object sender, KeyPressEventArgs e)
 	{
-		
-		Title = "Terminal IP: " + Generators.GenerateIP ();
+		if (e.Event.Key == Gdk.Key.Page_Up) {
+			Title = "Terminal IP: " + Generators.GenerateIP () + " Password: " + Generators.GeneratePassword (8);
+		}
+
+		if (e.Event.Key == Gdk.Key.Escape) {
+			Application.Quit ();
+		}
 	}
 }

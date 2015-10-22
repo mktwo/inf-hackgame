@@ -9,7 +9,7 @@ namespace geHacktbal
 		{
 			Application.Init ();
 			MainWindow win = new MainWindow ();
-			win.Title = "Terminal IP: " + Generators.GenerateIP();
+			win.Title = "Terminal IP: " + Generators.GenerateIP() + " Password: " + Generators.GeneratePassword(8);
 			win.Show ();
 			Application.Run ();
 		}
