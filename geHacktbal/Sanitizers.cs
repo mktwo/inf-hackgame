@@ -3,6 +3,11 @@ using System.Text.RegularExpressions;
 
 namespace geHacktbal
 {
+	// ===============================================================================//
+	// This class holds functions with which the game can transform data to fit
+	// display expectations, such as removing any non-numeric characters from a string
+	// ==============================================================================//
+
 	public class Sanitizers
 	{
 		private static Regex digitsOnly = new Regex(@"[^\d]");

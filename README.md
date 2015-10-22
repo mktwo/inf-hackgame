@@ -1,2 +1,4 @@
 # inf-hackgame
-GTK# hacking game in progress.
+GTK#-based hacking game in progress.
+
+*Currently does nothing noteworthy*
