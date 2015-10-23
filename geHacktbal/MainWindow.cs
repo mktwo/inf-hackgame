@@ -4,6 +4,9 @@ using geHacktbal;
 
 public partial class MainWindow: Gtk.Window
 {
+	private string testinfo = "Super secret!";
+	private string testkey = "cipheriffic";
+
 	public MainWindow () : base (Gtk.WindowType.Toplevel)
 	{
 		Build ();
@@ -25,8 +28,15 @@ public partial class MainWindow: Gtk.Window
 
 	protected void OnKeyPressEvent (object sender, KeyPressEventArgs e)
 	{
+		// PageUp to regenerate IP and password
 		if (e.Event.Key == Gdk.Key.Page_Up) {
 			Title = "Terminal IP: " + Generators.GenerateIP () + " Password: " + Generators.GeneratePassword (8);
+		}
+			
+		// PageDown to do crypto stuff..
+		if (e.Event.Key == Gdk.Key.Page_Down) {
+			testkey = Generators.GeneratePassword (8);
+			Title = "RC4: " + Crypto.RC4(testinfo, testkey) + " === Rot13: " +   Crypto.Rot13(testinfo) + " === RC4 Key = " + testkey; 
 		}
 
 		if (e.Event.Key == Gdk.Key.Escape) {
