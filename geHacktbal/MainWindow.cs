@@ -1,15 +1,32 @@
 ﻿using System;
 using Gtk;
 using geHacktbal;
+using System.IO;
 
 public partial class MainWindow: Gtk.Window
 {
 	private string testinfo = "Super secret!";
 	private string testkey = "cipheriffic";
+	public string[] currentProfile;
 
 	public MainWindow () : base (Gtk.WindowType.Toplevel)
 	{
 		Build ();
+
+		// Savegame check or creation
+		if (File.Exists ("sav/profile_1.txt")) {
+			string[] s = File.ReadAllLines ("sav/profile_1.txt");
+			currentProfile = s;
+		} else {
+			string[] newProfile = new string[2];
+			newProfile.SetValue(Generators.GenerateIP (), 0);
+			newProfile.SetValue(Generators.GeneratePassword (8), 1);
+
+			currentProfile = newProfile;
+			SaveProfile ();
+		}
+
+		UpdateTitle ();
 	}
 
 	protected void OnDeleteEvent (object sender, DeleteEventArgs a)
@@ -20,27 +37,54 @@ public partial class MainWindow: Gtk.Window
 
 	protected void OnTextChanged (object sender, EventArgs e)
 	{
-		int iNum1 = geHacktbal.Sanitizers.DigitsOnly(entry2.Text.ToString());
-		int iNum2 = geHacktbal.Sanitizers.DigitsOnly(entry3.Text.ToString());
-		int iResult = iNum1 + iNum2;
-		entry5.Text = geHacktbal.Sanitizers.DisplayableCurrency(iResult.ToString());
+		
 	}
 
-	protected void OnKeyPressEvent (object sender, KeyPressEventArgs e)
+	protected void UpdateTitle ()
 	{
-		// PageUp to regenerate IP and password
-		if (e.Event.Key == Gdk.Key.Page_Up) {
-			Title = "Terminal IP: " + Generators.GenerateIP () + " Password: " + Generators.GeneratePassword (8);
-		}
-			
-		// PageDown to do crypto stuff..
-		if (e.Event.Key == Gdk.Key.Page_Down) {
-			testkey = Generators.GeneratePassword (8);
-			Title = "RC4: " + Crypto.RC4(testinfo, testkey) + " === Rot13: " +   Crypto.Rot13(testinfo) + " === RC4 Key = " + testkey; 
-		}
+		Title = "Terminal IP: " + currentProfile [0] + " - Password: " + currentProfile [1];
 
-		if (e.Event.Key == Gdk.Key.Escape) {
-			Application.Quit ();
-		}
+		entry2.Text = currentProfile [0];
+		entry3.Text = currentProfile [1];
+	}
+
+	protected void SaveProfile()
+	{
+		UpdateTitle ();
+		File.WriteAllLines ("sav/profile_1.txt", currentProfile);
+	}
+
+	protected void OnRefreshActionActivated (object sender, EventArgs e)
+	{
+		currentProfile [0] = Generators.GenerateIP ();
+		currentProfile [1] = Generators.GeneratePassword (8);
+		UpdateTitle ();
+	}
+
+
+	protected void OnQuitActionActivated (object sender, EventArgs e)
+	{
+		Application.Quit ();
+	}
+
+
+	protected void OnSaveActionActivated (object sender, EventArgs e)
+	{
+		currentProfile [0] = entry2.Text.ToString ();
+		currentProfile [1] = entry3.Text.ToString ();
+		SaveProfile();
+	}
+
+	protected void OnRC4ActionActivated (object sender, EventArgs e)
+	{
+		testinfo = textview1.Buffer.Text.ToString ();
+		textview1.Buffer.Text = Crypto.RC4(testinfo, testkey);
+	}
+
+
+	protected void OnRot13ActionActivated (object sender, EventArgs e)
+	{
+		testinfo = textview1.Buffer.Text.ToString ();
+		textview1.Buffer.Text = Crypto.Rot13 (testinfo);
 	}
 }

@@ -22,7 +22,7 @@ namespace geHacktbal
 		{
 			StringBuilder result = new StringBuilder ();
 			int x, y, j = 0;
-			int[] box = new int[8]; //Keeping the size small for now, to not stray too deep into crazy symbols!
+			int[] box = new int[4]; //Keeping the size small for now, to not stray too deep into crazy symbols!
 
 			for (int i = 0; i < box.Length; i++) {
 				box [i] = i;

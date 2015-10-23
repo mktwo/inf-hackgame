@@ -11,7 +11,7 @@ namespace geHacktbal
 	public class Generators
 	{
 		private static Random rnd = new Random();
-		private const string pwchars = "AaBbCcDdEeFfGgHhJjKkMmNnPpQqRrSsTtUuVvWwXxYyZz23456789";
+		private const string pwchars = "AaBbCcDdEeFfGgHhJjKkMmNnPpQqRrSsTtUuVvWwXxYyZz23456789"; //avoiding highly similar characters like 'l, 1, I' altogether.
 
 		public Generators ()
 		{

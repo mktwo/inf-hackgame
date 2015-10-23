@@ -1,5 +1,6 @@
 ﻿using System;
 using Gtk;
+using System.IO;
 
 namespace geHacktbal
 {
@@ -9,9 +10,10 @@ namespace geHacktbal
 		{
 			Application.Init ();
 			MainWindow win = new MainWindow ();
-			win.Title = "Terminal IP: " + Generators.GenerateIP() + " Password: " + Generators.GeneratePassword(8);
+			//win.Title = "Terminal IP: " + Generators.GenerateIP() + " Password: " + Generators.GeneratePassword(8);
 			win.Show ();
 			Application.Run ();
+
 		}
 	}
 }
