@@ -7,23 +7,27 @@ public partial class MainWindow: Gtk.Window
 {
 	private string testinfo = "Super secret!";
 	private string testkey = "cipheriffic";
+	private static string username = "null"; 
+	private string profilePath = System.IO.Path.Combine (Directory.GetCurrentDirectory (), "sav"); 
 	public string[] currentProfile;
+
+	ProfileNameDialog namedialog = new ProfileNameDialog (username);
 
 	public MainWindow () : base (Gtk.WindowType.Toplevel)
 	{
 		Build ();
 
 		// Savegame check or creation
-		if (File.Exists ("sav/profile_1.txt")) {
-			string[] s = File.ReadAllLines ("sav/profile_1.txt");
+		if (File.Exists (profilePath)) {
+			string[] s = File.ReadAllLines (profilePath);
 			currentProfile = s;
 		} else {
-			string[] newProfile = new string[2];
+			string[] newProfile = new string[3];
 			newProfile.SetValue(Generators.GenerateIP (), 0);
 			newProfile.SetValue(Generators.GeneratePassword (8), 1);
-
+			newProfile.SetValue ("profile_" + username, 2);
 			currentProfile = newProfile;
-			SaveProfile ();
+			//SaveProfile ();
 		}
 
 		UpdateTitle ();
@@ -51,13 +55,15 @@ public partial class MainWindow: Gtk.Window
 	protected void SaveProfile()
 	{
 		UpdateTitle ();
-		File.WriteAllLines ("sav/profile_1.txt", currentProfile);
+		Directory.CreateDirectory ("sav");
+		File.WriteAllLines (System.IO.Path.Combine(profilePath, "profile_" + currentProfile[2] + ".txt"), currentProfile);
 	}
 
 	protected void OnRefreshActionActivated (object sender, EventArgs e)
 	{
 		currentProfile [0] = Generators.GenerateIP ();
 		currentProfile [1] = Generators.GeneratePassword (8);
+		currentProfile [2] = namedialog.profileName;
 		UpdateTitle ();
 	}
 
@@ -72,6 +78,7 @@ public partial class MainWindow: Gtk.Window
 	{
 		currentProfile [0] = entry2.Text.ToString ();
 		currentProfile [1] = entry3.Text.ToString ();
+		currentProfile [2] = namedialog.profileName;
 		SaveProfile();
 	}
 
@@ -86,5 +93,10 @@ public partial class MainWindow: Gtk.Window
 	{
 		testinfo = textview1.Buffer.Text.ToString ();
 		textview1.Buffer.Text = Crypto.Rot13 (testinfo);
+	}
+	protected void OnNewActionActivated (object sender, EventArgs e)
+	{
+		namedialog.Show ();
+
 	}
 }

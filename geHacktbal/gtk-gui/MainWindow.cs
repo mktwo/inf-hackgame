@@ -21,6 +21,8 @@ public partial class MainWindow
 	
 	private global::Gtk.Action executeAction1;
 	
+	private global::Gtk.Action newAction;
+	
 	private global::Gtk.VBox vbox2;
 	
 	private global::Gtk.MenuBar menubar2;
@@ -71,6 +73,9 @@ public partial class MainWindow
 		this.executeAction1 = new global::Gtk.Action ("executeAction1", global::Mono.Unix.Catalog.GetString ("Rot13"), null, "gtk-execute");
 		this.executeAction1.ShortLabel = global::Mono.Unix.Catalog.GetString ("Rot13");
 		w1.Add (this.executeAction1, null);
+		this.newAction = new global::Gtk.Action ("newAction", global::Mono.Unix.Catalog.GetString ("Set profile name"), null, "gtk-new");
+		this.newAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("Set profile name");
+		w1.Add (this.newAction, null);
 		this.UIManager.InsertActionGroup (w1, 0);
 		this.AddAccelGroup (this.UIManager.AccelGroup);
 		this.CanDefault = true;
@@ -85,7 +90,7 @@ public partial class MainWindow
 		this.vbox2.Name = "vbox2";
 		this.vbox2.Spacing = 4;
 		// Container child vbox2.Gtk.Box+BoxChild
-		this.UIManager.AddUiFromString (@"<ui><menubar name='menubar2'><menu name='FileAction' action='FileAction'><menuitem name='saveAction' action='saveAction'/><menuitem name='quitAction' action='quitAction'/></menu><menu name='CredentialsAction' action='CredentialsAction'><menuitem name='refreshAction' action='refreshAction'/></menu><menu name='CryptoAction' action='CryptoAction'><menuitem name='executeAction' action='executeAction'/><menuitem name='executeAction1' action='executeAction1'/></menu></menubar></ui>");
+		this.UIManager.AddUiFromString ("<ui><menubar name='menubar2'><menu name='FileAction' action='FileAction'><menuitem name='saveAction' action='saveAction'/><menuitem name='quitAction' action='quitAction'/></menu><menu name='CredentialsAction' action='CredentialsAction'><menuitem name='refreshAction' action='refreshAction'/><menuitem name='newAction' action='newAction'/></menu><menu name='CryptoAction' action='CryptoAction'><menuitem name='executeAction' action='executeAction'/><menuitem name='executeAction1' action='executeAction1'/></menu></menubar></ui>");
 		this.menubar2 = ((global::Gtk.MenuBar)(this.UIManager.GetWidget ("/menubar2")));
 		this.menubar2.Name = "menubar2";
 		this.vbox2.Add (this.menubar2);
@@ -96,6 +101,7 @@ public partial class MainWindow
 		// Container child vbox2.Gtk.Box+BoxChild
 		this.table1 = new global::Gtk.Table (((uint)(4)), ((uint)(2)), false);
 		this.table1.HeightRequest = 292;
+		this.table1.Name = "table1";
 		this.table1.RowSpacing = ((uint)(6));
 		this.table1.ColumnSpacing = ((uint)(12));
 		this.table1.BorderWidth = ((uint)(8));
@@ -193,6 +199,7 @@ public partial class MainWindow
 		this.refreshAction.Activated += new global::System.EventHandler (this.OnRefreshActionActivated);
 		this.executeAction.Activated += new global::System.EventHandler (this.OnRC4ActionActivated);
 		this.executeAction1.Activated += new global::System.EventHandler (this.OnRot13ActionActivated);
+		this.newAction.Activated += new global::System.EventHandler (this.OnNewActionActivated);
 		this.entry3.Changed += new global::System.EventHandler (this.OnTextChanged);
 		this.entry2.Changed += new global::System.EventHandler (this.OnTextChanged);
 	}
