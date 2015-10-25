@@ -7,30 +7,37 @@ public partial class MainWindow: Gtk.Window
 {
 	private string testinfo = "Super secret!";
 	private string testkey = "cipheriffic";
-	private static string username = "null"; 
-	private string profilePath = System.IO.Path.Combine (Directory.GetCurrentDirectory (), "sav"); 
-	public string[] currentProfile;
-
-	ProfileNameDialog namedialog = new ProfileNameDialog (username);
+	private static string profilePath = System.IO.Path.Combine (Directory.GetCurrentDirectory (), "sav"); 
+	private string[] availableProfiles;
+	public static string[] currentProfile;
 
 	public MainWindow () : base (Gtk.WindowType.Toplevel)
 	{
 		Build ();
+		availableProfiles = Directory.GetFiles(profilePath);
 
 		// Savegame check or creation
-		if (File.Exists (profilePath)) {
-			string[] s = File.ReadAllLines (profilePath);
+		if (availableProfiles.Length > 0) {
+			Console.Write ("Profile detected!");
+			string[] s = File.ReadAllLines (availableProfiles[0]);
 			currentProfile = s;
+			UpdateTitle ();
 		} else {
+			Console.Write ("No profile detected!");
 			string[] newProfile = new string[3];
-			newProfile.SetValue(Generators.GenerateIP (), 0);
-			newProfile.SetValue(Generators.GeneratePassword (8), 1);
-			newProfile.SetValue ("profile_" + username, 2);
-			currentProfile = newProfile;
-			//SaveProfile ();
-		}
+			ProfileNameDialog namedialog = new ProfileNameDialog ("Please enter a name...");
+			namedialog.Response += (object o, ResponseArgs args) => {
+				if (args.ResponseId == ResponseType.Ok) {
+					newProfile[0] = Generators.GenerateIP ();
+					newProfile[1] = Generators.GeneratePassword (8);
+					newProfile[2] = namedialog.newName;
+					currentProfile = newProfile;
+					//SaveProfile ();
+					UpdateTitle ();
+				}
+			};
 
-		UpdateTitle ();
+		}
 	}
 
 	protected void OnDeleteEvent (object sender, DeleteEventArgs a)
@@ -46,7 +53,7 @@ public partial class MainWindow: Gtk.Window
 
 	protected void UpdateTitle ()
 	{
-		Title = "Terminal IP: " + currentProfile [0] + " - Password: " + currentProfile [1];
+		Title = "Name: " + currentProfile[2] + " Terminal IP: " + currentProfile [0] + " - Password: " + currentProfile [1];
 
 		entry2.Text = currentProfile [0];
 		entry3.Text = currentProfile [1];
@@ -63,8 +70,14 @@ public partial class MainWindow: Gtk.Window
 	{
 		currentProfile [0] = Generators.GenerateIP ();
 		currentProfile [1] = Generators.GeneratePassword (8);
-		currentProfile [2] = namedialog.profileName;
-		UpdateTitle ();
+		ProfileNameDialog namedialog = new ProfileNameDialog (currentProfile[2]);
+		namedialog.Response += (object o, ResponseArgs args) => {
+			if (args.ResponseId == ResponseType.Ok) {
+				currentProfile[2] = namedialog.newName;
+				//SaveProfile ();
+				UpdateTitle ();
+			}
+		};
 	}
 
 
@@ -76,9 +89,6 @@ public partial class MainWindow: Gtk.Window
 
 	protected void OnSaveActionActivated (object sender, EventArgs e)
 	{
-		currentProfile [0] = entry2.Text.ToString ();
-		currentProfile [1] = entry3.Text.ToString ();
-		currentProfile [2] = namedialog.profileName;
 		SaveProfile();
 	}
 
@@ -96,7 +106,13 @@ public partial class MainWindow: Gtk.Window
 	}
 	protected void OnNewActionActivated (object sender, EventArgs e)
 	{
-		namedialog.Show ();
-
+		ProfileNameDialog namedialog = new ProfileNameDialog (currentProfile [2]);
+		namedialog.Response += (object o, ResponseArgs args) => {
+			if (args.ResponseId == ResponseType.Ok) {
+				currentProfile[2] = namedialog.newName;
+				//SaveProfile ();
+				UpdateTitle ();
+			}
+		};
 	}
 }

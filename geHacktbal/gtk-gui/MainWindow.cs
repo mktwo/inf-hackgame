@@ -90,7 +90,7 @@ public partial class MainWindow
 		this.vbox2.Name = "vbox2";
 		this.vbox2.Spacing = 4;
 		// Container child vbox2.Gtk.Box+BoxChild
-		this.UIManager.AddUiFromString ("<ui><menubar name='menubar2'><menu name='FileAction' action='FileAction'><menuitem name='saveAction' action='saveAction'/><menuitem name='quitAction' action='quitAction'/></menu><menu name='CredentialsAction' action='CredentialsAction'><menuitem name='refreshAction' action='refreshAction'/><menuitem name='newAction' action='newAction'/></menu><menu name='CryptoAction' action='CryptoAction'><menuitem name='executeAction' action='executeAction'/><menuitem name='executeAction1' action='executeAction1'/></menu></menubar></ui>");
+		this.UIManager.AddUiFromString (@"<ui><menubar name='menubar2'><menu name='FileAction' action='FileAction'><menuitem name='saveAction' action='saveAction'/><menuitem name='quitAction' action='quitAction'/></menu><menu name='CredentialsAction' action='CredentialsAction'><menuitem name='refreshAction' action='refreshAction'/><menuitem name='newAction' action='newAction'/></menu><menu name='CryptoAction' action='CryptoAction'><menuitem name='executeAction' action='executeAction'/><menuitem name='executeAction1' action='executeAction1'/></menu></menubar></ui>");
 		this.menubar2 = ((global::Gtk.MenuBar)(this.UIManager.GetWidget ("/menubar2")));
 		this.menubar2.Name = "menubar2";
 		this.vbox2.Add (this.menubar2);
@@ -200,7 +200,5 @@ public partial class MainWindow
 		this.executeAction.Activated += new global::System.EventHandler (this.OnRC4ActionActivated);
 		this.executeAction1.Activated += new global::System.EventHandler (this.OnRot13ActionActivated);
 		this.newAction.Activated += new global::System.EventHandler (this.OnNewActionActivated);
-		this.entry3.Changed += new global::System.EventHandler (this.OnTextChanged);
-		this.entry2.Changed += new global::System.EventHandler (this.OnTextChanged);
 	}
 }
